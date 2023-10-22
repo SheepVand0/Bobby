@@ -19,9 +19,11 @@ namespace Bobby.Core
 
         private float m_Duration = 0;
 
-        private float m_ValueDuration = 0;
+        private float m_StartEndDifference = 0;
 
         private float m_StartTime = 0;
+
+        private float m_Exponent = 1;
 
         public float GetStart() => m_Start;
         public float GetEnd() => m_End;
@@ -56,7 +58,7 @@ namespace Bobby.Core
         {
             m_Start = p_Start;
             m_End = p_Value;
-            m_ValueDuration = m_End - m_Start;
+            m_StartEndDifference = m_End - m_Start;
             m_Duration = p_Duration;
             OnInit();
         }
@@ -64,6 +66,11 @@ namespace Bobby.Core
         public void SetFinishedCallback(Action p_Callback)
         {
             m_FinishedCallback = p_Callback;
+        }
+
+        public void SetExponent(float p_Exponent)
+        {
+            m_Exponent = p_Exponent;
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -78,7 +85,7 @@ namespace Bobby.Core
 
             float l_Prct = (UnityEngine.Time.realtimeSinceStartup - m_StartTime) / m_Duration;
 
-            float l_Value = m_Start + (m_ValueDuration * l_Prct);
+            float l_Value = (m_Start + (m_StartEndDifference * (float)(Math.Pow(l_Prct, m_Exponent))));
 
             OnChange?.Invoke(l_Value);
 
@@ -273,6 +280,14 @@ namespace Bobby.Core
         {
             foreach (FloatAnimation l_Current in gameObject.GetComponents<FloatAnimation>())
                 l_Current.Stop();
+        }
+
+        public void ForEachAnims(Action<FloatAnimation> p_Animation)
+        {
+            foreach (var l_Item in GetComponents<FloatAnimation>())
+            {
+                p_Animation.Invoke(l_Item);
+            }
         }
     }
 }

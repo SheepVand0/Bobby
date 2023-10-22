@@ -11,7 +11,7 @@ namespace Bobby
 {
     internal class BobbyModule : CP_SDK.ModuleBase<BobbyModule>
     {
-        public override EIModuleBaseType Type => EIModuleBaseType.Integrated;
+        public override EIModuleBaseType Type => EIModuleBaseType.External;
 
         public override string Name => "Bobby";
 
@@ -25,12 +25,18 @@ namespace Bobby
 
         protected override void OnDisable()
         {
-
+            if (Core.Bobby.Instance != null)
+            {
+                Core.Bobby.Instance.gameObject.SetActive(false);
+            }
         }
 
         protected override void OnEnable()
         {
-            //Pet.CreatePet<Bobby.Core.Bobby>();
+            if (Core.Bobby.Instance == null)
+                Pet.CreatePet<Core.Bobby>();
+            else
+                Core.Bobby.Instance.gameObject.SetActive(true);
         }
     }
 }
