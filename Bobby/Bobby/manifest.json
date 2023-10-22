@@ -3,9 +3,9 @@
   "id": "Bobby",
   "name": "Bobby",
   "author": "",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
-  "gameVersion": "1.18.3",
+  "gameVersion": "1.29.0",
   "dependsOn": {
     "BSIPA": "^4.2.0"
   }
